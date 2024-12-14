@@ -4,17 +4,16 @@ import json
 import re
 import base64
 import os
-from dotenv import load_dotenv
 from openai import OpenAI
 import tempfile
 
-# Load environment variables
-load_dotenv()
+# Retrieve API keys from the environment or Streamlit secrets
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", st.secrets["OPENAI_API_KEY"])
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", st.secrets["GEMINI_API_KEY"])
 
-
-# Retrieve API keys from the environment
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+# Validate API keys
+if not OPENAI_API_KEY or not GEMINI_API_KEY:
+    st.error("API keys are missing! Please ensure they are properly set in Streamlit Secrets.")
 
 # Initialize OpenAI client with API key
 client = OpenAI(api_key=OPENAI_API_KEY)
